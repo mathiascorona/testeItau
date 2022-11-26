@@ -1,0 +1,44 @@
+<div class="container">
+  <form [formGroup]="formCountry">
+    <table class="table table-borderless table-dark">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">NAME</th>
+          <th scope="col">VALUE</th>
+          <th scope="col">CODE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let country of countries; let i = index">
+          <tr>
+            <th scope="row">{{i}}</th>
+            <ng-container *ngIf="isEditing && indexEdit == i; else editing">
+              <td><input type="text" formControlName="name" /></td>
+              <td><input type="text" formControlName="value" /></td>
+              <td><input type="text" formControlName="code" /></td>
+            </ng-container>
+            <ng-template #editing>
+              <td>{{country.name}}</td>
+              <td>{{country.value}}</td>
+              <td>{{country.extra.code}}</td>
+            </ng-template>
+            <td>
+              <button *ngIf="isEditing && indexEdit == i" class="btn btn-outline-success" (click)="submit()"><i class="bi bi-check-square"></i></button>
+              <button *ngIf="indexEdit != i" [disabled]="isEditing" class="btn btn-outline-info" (click)="onEdit(i)"><i class="bi bi-pencil-square"></i></button>
+            </td>
+            <td>
+              <button class="btn btn-outline-danger" (click)="removeCountry(i)"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <div *ngIf="!isEditing">
+      <input class="form-control input" type="text" placeholder="NAME" formControlName="name"/>
+      <input class="form-control input" type="text" placeholder="VALUE" formControlName="value" />
+      <input class="form-control input" type="text" placeholder="CODE" formControlName="code" />
+      <button class="btn btn-primary button" (click)="submit()">Submit</button>
+    </div>
+  </form>
+</div>
